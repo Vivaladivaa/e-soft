@@ -1,0 +1,44 @@
+function deepCopy(obj, hash = new WeakMap()) {
+    if (Object(obj) !== obj || obj instanceof Function) {
+        return obj;
+    }
+
+    if (hash.has(obj)) {
+        return hash.get(obj);
+    }
+
+    let result = Array.isArray(obj) ? [] : {};
+
+    hash.set(obj, result);
+
+    if (obj instanceof Date) {
+        return new Date(obj);
+    }
+
+    if (obj instanceof Map) {
+        obj.forEach((value, key) => {
+            result.set(key, deepCopy(value, hash));
+        });
+        return result;
+    }
+
+    if (obj instanceof Set) {
+        obj.forEach(value => {
+            result.add(deepCopy(value, hash));
+        });
+        return result;
+    }
+
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            result[key] = deepCopy(obj[key], hash);
+        }
+    }
+
+    return result;
+}
+
+const originalObject = { a: 1, b: { c: 2 }, d: [3, 4] };
+const copiedObject = deepCopy(originalObject);
+
+console.log(copiedObject); /
