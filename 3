@@ -1,0 +1,6 @@
+function tt(tt){
+ while(/\(\)|\[\]|\{\}/g.test(tt)){
+     tt = tt.replace(/\(\)|\[\]|\{\}/g,"")
+ }
+ return !tt.length;
+}
